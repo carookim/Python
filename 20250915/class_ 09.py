@@ -7,8 +7,7 @@
 
 import random
 class RSPGame:
-    def __init__(self):
-        self.choices = {1: '가위', 2: '바위', 3: '보'}
+    choices = {1: '가위', 2: '바위', 3: '보'} # # * 클래스 변수로 설정한 이유,
     
     def get_user_choice(self):
         while True:
@@ -40,8 +39,11 @@ class RSPGame:
             print(f"사용자 선택: {self.choices[user_choice]}, 컴퓨터 선택: {self.choices[computer_choice]}")
             result = self.determine_winner(user_choice, computer_choice)
             print(f"결과: {result}")
-            
-            again = input("다시 하시겠습니까? (y/n): ").strip().lower()
-            if again != 'y':
-                print("게임을 종료합니다.")
-                break
+
+# 메인 코드
+while True:
+    RSPGame().play()
+    again = input("다시 하시겠습니까? (y/n): ").strip().lower()
+    if again != 'y':
+        print("게임을 종료합니다.")
+        break
