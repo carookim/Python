@@ -1,0 +1,22 @@
+# 클래스 콜백 함수
+# __eq__ : == 연산자
+# __ne__ : !=
+# __lt__ : <
+# __gt__ : >
+# __le__ : <=
+# __ge__ : >=
+# __str__ : print() 함수 호출시 자동 호출 ^
+
+class Student:
+    def __init__(self,name,score): # 객체 생성할때 자동호출이 된다.
+        self.name = name
+        self.score  = score
+    def __str__(self): # print() 함수 호출시 자동호출이 된다.
+        return f'이름 {self.name}, 점수{self.score}'
+    def __eq__(self, other): # 비교연산자 ==를 사용시 자동호출이 된다.
+        return self.name == other.name
+s1 = Student('홍길동', 90) # 객체 생성 후
+s2 = Student('임꺽정', 80) # 클래스 부여를 함으로써 
+                           # 자동호출이 되는 함수들에 사용자지정 설정을 적용한다. 그 사용자 지정 설정은 클래스내부에 정의되어 있다.
+s1 == s2
+print(s1)
