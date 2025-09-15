@@ -19,7 +19,7 @@ peoples = [Student(), Teacher(), Student(), Teacher()]
 peoples[0].teach() # AttributeError: 'Student' object has no attribute 'teach'
                    # 해당 객체의 클래스에 없는 메소드를 사용하려고 하여 생긴 오류
 
-if instance(peoples[0], Teacher):
+if isinstance(peoples[0], Teacher):
     print(peoples[0].teach())
-elif instance(peoples[0], Student):
+elif isinstance(peoples[0], Student):
     print(peoples[0].study())
