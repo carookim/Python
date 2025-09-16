@@ -2,7 +2,7 @@
 
 # 1] 이전시간에 배운 클래스 개념 복습하기
 
-# 1] - 1 기본 클래스 생성하기
+# 1) 기본 클래스 생성하기
 class review:
     # 클래스변수 생성 : 모든 인스턴스가 공유하는 변수
     count = 0
@@ -10,13 +10,13 @@ class review:
     def __init__(self):
         self.name = '' # 인스턴스 변수 : 자기가 고유하게 지니고 있는 변수
 
-# 1] - 2 인스턴스 생성 = 객체 생성
+# 2) 인스턴스 생성 = 객체 생성
 r1 = review() # def __init__(self):
               #     self.name = '' 이실행이되어 r1에 클래스 review()가 부여되고, '' 가 생긴다.
 r2 = review()
 # print(r1)
 
-# 1] - 3 인스턴스 변수 변경하기
+# 3) 인스턴스 변수 변경하기
 r1.name = '첫번째 리뷰'
 print(f'r1 인스턴스 변수 : {r1.name} / r2 인스턴스 변수 : {r2.name}')
 print(f'review 클래스 변수 : {review.count}')
