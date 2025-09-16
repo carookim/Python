@@ -1,5 +1,3 @@
-# --강사님 풀이--
-
 # 직원(Employee) 클래스
 class Employee:
 	def __init__(self, emp_id, name, base_salary=0):
