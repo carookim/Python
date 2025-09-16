@@ -48,6 +48,10 @@ print(p1.name)
 # private 변수,
 # @property, @score.setter, @score.deleter
 # 이 private 변수를 안전하게 다루기 위한 인터페이스
+# private 변수 구현 @ property를 통해 접근하는 데에 제한을 둔다.
+
+# private 변수에서 실제 보호는 강제로 하는 게 아니라
+# “getter/ setter 경로를 통해서만 값이 바뀌도록 설계"하는 것
 
 
 
