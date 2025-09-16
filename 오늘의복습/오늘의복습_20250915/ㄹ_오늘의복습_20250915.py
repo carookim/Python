@@ -1,4 +1,4 @@
-# 파일 위치 : class_9.py
+# 파일 위치 : class_11.py
 
 # 3] isinstance() 함수
 
