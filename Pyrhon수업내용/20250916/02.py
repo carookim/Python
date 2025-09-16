@@ -22,5 +22,6 @@ else:
 result = '성인' if age >= 18 else '미성년' # 삼합연산자
 
 # 4)
-list_1 = [1,2,1,5,3,2,1,54]
-# git
+list_1 = [10,20,10,50,30,20,10,54]
+print( [ '성인' if i>=18 else '미성년'  for i in list_1] )
+print( [ '성인' if i>=18 else '미성년'  for i in list_1] )
