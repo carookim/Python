@@ -17,10 +17,12 @@
 
 import streamlit as st
 if 'count' not in st.session_state: # session_state : Streamlit에서 사용자별로 상태를 저장하는 공간
-    st.session_state.count = 0
+    st.session_state.count = 0      # 딕셔너리(dictionary)처럼 동작하는 객체다. 그래서 대괄호를 사용한다.
 
 if st.button('카운트 증가'):
     st.write('버튼 클릭됨')
     st.session_state['count'] += 1 # ^여기서 왜 대괄호 인지
 st.write('현재 카운트:',st.session_state['count'])
-st.json(st.session_state)  # 세션 상태 확인 # ^ json이 뭔지
+st.json(st.session_state)  # 세션 상태 확인 # ^ json :Python 객체를 JSON 형태로 브라우저에 예쁘게 보여주는 Streamlit 함수예요.
+                                            # JSON = JavaScript Object Notation
+                                            # 쉽게 말하면 데이터를 텍스트 형식으로 구조화해서 보여주는 표준 포맷
