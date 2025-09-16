@@ -1,6 +1,6 @@
 # 파일 위치 : class_11.py
 
-# 3] isinstance() 함수
+# 4] isinstance() 함수
 
 # isinstance() 함수
 # - 객체가 어떤 클래스의 인스턴스인지 확인하는 함수
