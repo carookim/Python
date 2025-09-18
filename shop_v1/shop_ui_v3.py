@@ -1,6 +1,8 @@
+# shopv2
+
 import streamlit as st
 import pandas as pd
-import shopdbmng
+import shopv2
 
 st.set_page_config(layout="wide")
 
@@ -22,7 +24,7 @@ left_col, right_col = st.columns([1, 3])
 with left_col:
     st.header("회원")
     if st.button("회원 리스트 보기"):
-        datas = shopdbmng.readAll_customers()       
+        datas = shopv2.readAll_customers()       
         st.session_state.members = pd.DataFrame(datas)
         st.session_state.show_list = True
 
@@ -66,13 +68,13 @@ with right_col:
                         # 기존 회원 수정
                         st.session_state.members.at[st.session_state.selected_member_index, "회원아이디"] = member_id
                         st.session_state.members.at[st.session_state.selected_member_index, "회원이름"] = member_name
-                        shopdbmng.update_customer(member_id, member_name)
+                        shopv2.update_customer(member_id, member_name)
                         st.rerun()
                     else:
                         # 신규 회원 추가 (concat 사용)
                         new_row = pd.DataFrame([{"회원아이디": member_id, "회원이름": member_name}])
                         st.session_state.members = pd.concat([st.session_state.members, new_row], ignore_index=True)
-                        shopdbmng.create_customer(member_name)
+                        shopv2.create_customer(member_name)
                         st.session_state.selected_member_index = None
                         st.rerun()
         with col_b:

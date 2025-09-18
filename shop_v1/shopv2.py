@@ -78,16 +78,16 @@ def reset_customer_AI():
     conn.commit()
     print('AI 값이 1로 설정되었습니다.')
 
-reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
+# reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
 
-for i in range(5):  # 5개의 이순신 행을 생성
-    create_customer_data('이순신')
+# for i in range(5):  # 5개의 이순신 행을 생성
+#     create_customer_data('이순신')
 
-update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
-update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
-update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
+# update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
+# update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
+# update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
 # null상태로 추가한다면? ^
 # 반대로 추가한다면?
 # update_customer_data(4,'둘리') # 오류가 뜬다
-delete_customer_data() # 마지막에 추가한 항목 삭제, 마지막 항목인 custom_id : 5 , name : 이순신이 삭제
-print(read_customer_data()) # customer 데이터 조회
+# delete_customer_data() # 마지막에 추가한 항목 삭제, 마지막 항목인 custom_id : 5 , name : 이순신이 삭제
+# print(read_customer_data()) # customer 데이터 조회
