@@ -34,11 +34,11 @@ class FullTimeEmployee(Employee):
 
 # 계약직 PartTimeEmployee - 시간당 급여, 기본급 없음
 class PartTimeEmployee(Employee):
-    def __init__(self,id,name,hourly_rate,hours):
+    def __init__(self,id,name,hourly_rate,hours): # 여기에 base_salary 언급이 안됬는데 괜찮은건지?
         super().__init__(id,name,0) # base_salary는 사용하지 않아 0으로 설정
         self.hourly_rate = hourly_rate
         self.hours = hours
-    def __Str__(self):
+    def __str__(self):
         return f'{self.name} : {self.id}, {self.hourly_rate}, {self.hours}'
     def show_class(self):
         print('계약직 클래스')

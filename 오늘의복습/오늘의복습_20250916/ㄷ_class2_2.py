@@ -35,9 +35,37 @@ except ValueError as e: # try 블록에서 발생한 특정 오류를 처리하�
 
 # 2)-1 클래스 정의하기
 # 직원 Employee - 아이디, 이름 기본급
+class Employee:
+    def __init__(self,id,name,base_salary):
+        self.name = name
+        self.id = id
+        self.base_salary = base_salary
+    def __str__(self):
+        return f'id : {self.id}, 이름 : {self.name}, 기본급여 : {self.base_salary}'
 # 정규직 FullTimeEmployee - 보너스
+class FullTimeEmployee(Employee):
+    def __init__(self,id,name,base_salary,bonus_salary):
+        super().__init__(id,name,base_salary)
+        self.bonus_salary = bonus_salary
+    def __str__(self):
+        return f'id : {self.id}, 이름 : {self.name}, 기본급여 : {self.base_salary}, 보너스 : {self.bonus_salary}'
 # 계약직 PartTimeEmployee - 시간당 급여, 기본급 없음
+class PartTimeEmployee(Employee):
+    def __init__(self,id,name,our_wage,hours):
+        super().__init__(id,name,0)
+        self.hour_wage = our_wage
+        self.hours = hours
+    def __str__(self):
+        return f'id : {self.id}, 이름 : {self.name}, \
+            시간당급여 : {self.hour_wage}, 일한시간 : {self.hours}'
 # 인턴 Intern - 고정수당
+class Intern(Employee):
+    def __init__(self,id,name,fixed_wage):
+        super().__init__(id,name,0)
+        self.fixed_wage = fixed_wage
+    def __str__(self):
+        return f'id : {self.id}, 이름 : {self.name}, \
+            고정급여 : {self.hour_wage}'
 
 # 2)-2
 # 정규직 직원, 계약직, 인턴을 모두 리스트에 섞어서 객체를 저장
