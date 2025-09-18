@@ -77,7 +77,7 @@ with right_col:
                 else:
                     st.session_state.members.loc[len(st.session_state.members)] = {"회원아이디": member_id, "회원이름": member_name}
                     # 데이터 추가 로직
-                    shopv2.create_customer(member_name)
+                    shopv1.create_customer(member_name)
                     del st.session_state.members
                     st.rerun()
         with col_b:
