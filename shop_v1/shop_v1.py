@@ -68,7 +68,7 @@ def update_customer(customer_id, name):
 
 # 고객정보 삭제
 def delete_customer(customer_id):
-    sql = 'delete from customer where customer_id=%s'
+    sql = 'delete from customer where customer_id = %s'
     with conn.cursor() as cur:
         cur.execute(sql,customer_id)
     conn.commit
