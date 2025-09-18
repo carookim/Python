@@ -1,3 +1,5 @@
+# 강사님 1차 수정
+
 # pip install pymysql # mysql을 접속할 수 있는 라이브러리
 # pip install dotenv  # 환경변수 .env를 로드할수 있는 라이브러리
 import pymysql
@@ -37,7 +39,6 @@ def create_customer(name):
 
 def readAll_customers(isDict = False):
     sql = 'select * from customer'     
-    
     result = []
     if isDict:
         with conn.cursor(pymysql.cursors.DictCursor) as cur:
@@ -48,11 +49,12 @@ def readAll_customers(isDict = False):
         with conn.cursor() as cur:
             cur.execute(sql)
             for c in cur.fetchall():            
-                print(f'{c[0]}  {c[1]}')  
-            result.append(
-            {"회원아이디": c[0], "회원이름": c[1]}
+                print(f'{c[0]}  {c[1]}')
+                result.append(
+                    {"회원아이디": c[0], "회원이름": c[1]}
                     )    
     print(f'조회완료 {result}')    
+    print(f'조회완료')    
     return result
 
 def update_customer(customer_id, name):
@@ -75,9 +77,9 @@ def delete_customer(customer_id):
     print(f'삭제되었습니다. {customer_id}') 
 
 create_customer('abc')
-# readAll_customers()
-# update_customer(1,'abc')
-# delete_customer(1)
+readAll_customers()
+update_customer(1,'abc')
+delete_customer(1)
 
 
 # 3.메소드
@@ -88,24 +90,3 @@ create_customer('abc')
     # 대쉬보드 : 고객별 상품별 구매회수, 평균구매액
 
 # 4 기능구현과 테스트가 되면..  streamlit으로 UI 구성 - 템플릿화면을 보고 유사한 형태로 구현
-
-# # ^에 사용된 함수와 용어 개념 https://chatgpt.com/s/t_68cb981b45dc8191ae4c7e77f4cdfda0
-# 위 개념의 예제 https://chatgpt.com/s/t_68cb982e742c819184a5d663d9218b78
-
-# 위코드를 sql명령어와 비교하여 차이점 알아보기 ^
-
-create_customer('abc') # ! : 여러개 추가됨
-# readAll_customers() # !
-# update_customer(1,'abc') # !
-# delete_customer(1) # ! 삭제 안됨, 출력은 됨
-
-# 3. 메소드
-    # 회원가입
-    # 상품정보 출력
-    # 상품구입
-    # 상품정보 입력
-    # 대쉬보드 : 고객별 상품명 구매회수 평균구매액
-
-# 4. 기능구현과 테스트가 되면.. streamlit으로 UI 구성 - 템플릿화면을 보고 유사한 형태로 구현
-
-# conn.close() # 접속해제
