@@ -75,12 +75,12 @@ def delete_customer_data():
 # 파이썬 함수 제작 : AI 기능이 함유된 PK값 초기화 하는 함수
 def reset_customer_AI():
     sql = 'delete from customer'
-    sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해도 작동한다.
+    # sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해도 작동한다.
     conn.cursor().execute(sql)
     conn.commit()
     print('customer 테이블 내용 삭제완료, AI 값이 1로 설정되었습니다.')
 
-reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
+reset_customer_AI() # customer 테이블 내용 삭제, AI 기능이 함유된 PK값 초기화 하는 함수
 
 # for i in range(5):  # 5개의 이순신 행을 생성
 #     create_customer_data('이순신')
