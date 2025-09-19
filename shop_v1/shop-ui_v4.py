@@ -1,8 +1,16 @@
 # mysql, python, streamlt 세가지 프로그램을 연동해서  streamlit 사이트 만들기
 
-# import할 프로그램 : pymysql, streamlit
+
 from dotenv import load_dotenv
 import os
 
-import pymysql
-import streamlit
+# import 프로그램 : pymysql, streamli
+import pymysql as ps
+import streamlit as st
+
+# import 파일 : shopv2.py
+import shopv2
+
+st.title('회원정보 조회 사이트')
+
+# streamlit 에서 session을 고려해야되는 부분?
