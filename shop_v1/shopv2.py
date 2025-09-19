@@ -1,4 +1,5 @@
 # 수강생 작성
+# 명령어가 적용이 안되는 이유
 
 # pip install pymysql # mysql을 접속할 수 있는 라이브러리
 # pip install dotenv  # 환경변수 .env를 로드할수 있는 라이브러리
@@ -44,6 +45,7 @@ def update_customer_data(name,customer_id):
     sql = 'update customer set name = %s where customer_id = %s'
     conn.cursor().execute(sql,(name,customer_id))
     conn.commit()
+    print('정보업데이트완료')
 
 # 고객정보 조회
 def read_customer_data():
@@ -76,7 +78,7 @@ def reset_customer_AI():
     sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해도 작동한다.
     conn.cursor().execute(sql)
     conn.commit()
-    print('테이블 리셋 완료, AI 값이 1로 설정되었습니다.')
+    print('customer 테이블 내용 삭제완료, AI 값이 1로 설정되었습니다.')
 
 reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
 
