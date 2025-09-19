@@ -73,21 +73,28 @@ def delete_customer_data():
 # ALTER TABLE customer AUTO_INCREMENT = 1;
 
 # 파이썬 함수 제작 : AI 기능이 함유된 PK값 초기화 하는 함수
-def reset_customer_AI():
+def delete_reset_customer():
     sql = 'delete from customer'
-    # sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해도 작동한다.
+    # sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해서 작동되게 하는 법?
     conn.cursor().execute(sql)
     conn.commit()
-    print('customer 테이블 내용 삭제완료, AI 값이 1로 설정되었습니다.')
+    print('customer 테이블 내용 삭제완료 되었습니다.')
 
-reset_customer_AI() # customer 테이블 내용 삭제, AI 기능이 함유된 PK값 초기화 하는 함수
+def reset_customer_AI():
+    sql = 'alter table customer auto_increment = 1' # sql 명령어를 여러번 작성해서 작동되게 하는 법?
+    conn.cursor().execute(sql)
+    conn.commit()
+    print('AI 기능이 함유된 PK값 초기화 완료 되었습니다.')
 
-# for i in range(5):  # 5개의 이순신 행을 생성
-#     create_customer_data('이순신')
+# delete_reset_customer() # customer 테이블 내용 삭제하는 함수
+# reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
 
-# update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
-# update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
-# update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
+for i in range(5):  # 5개의 이순신 행을 생성
+    create_customer_data('이순신')
+
+update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
+update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
+update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
 # # null상태로 추가한다면? ^
 # # 반대로 추가한다면?
 # # update_customer_data(4,'둘리') # 오류가 뜬다
