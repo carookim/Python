@@ -1,5 +1,5 @@
 # 수강생 작성
-# 함수가 실행이 되었다고 표시(출력)는 뜨는데,명령어가 적용이 안되는 이유
+# 함수가 실행이 되었다고 표시(출력)는 뜨는데,명령어가 적용이 안되는 이유 -> sql서버 연결이 되어있는지 확인하기
 
 # pip install pymysql # mysql을 접속할 수 있는 라이브러리
 # pip install dotenv  # 환경변수 .env를 로드할수 있는 라이브러리
@@ -89,12 +89,12 @@ def reset_customer_AI():
 # delete_reset_customer() # customer 테이블 내용 삭제하는 함수
 # reset_customer_AI() # AI 기능이 함유된 PK값 초기화 하는 함수
 
-for i in range(5):  # 5개의 이순신 행을 생성
-    create_customer_data('이순신')
+# for i in range(5):  # 5개의 이순신 행을 생성
+#     create_customer_data('이순신')
 
-update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
-update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
-update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
+# update_customer_data('권율',2) # cutomer_id : 2 에 '권율' 추가
+# update_customer_data('신사임당',3) # cutomer_id : 3 에'신사임당' 추가
+# update_customer_data('김유신',4) # cutomer_id : 4 에'김유신' 추가
 # # null상태로 추가한다면? ^
 # # 반대로 추가한다면?
 # # update_customer_data(4,'둘리') # 오류가 뜬다
