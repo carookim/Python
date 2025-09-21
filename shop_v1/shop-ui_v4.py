@@ -11,6 +11,8 @@ import streamlit as st
 # import 파일 : shopv2.py
 import shopv2
 
+# 사이트 제목
 st.title('회원정보 조회 사이트')
 
-# streamlit 에서 session을 고려해야되는 부분?
+# 사이트 메뉴판
+st.sidebar.selectbox()
