@@ -36,3 +36,39 @@ print(soup.select('td')[2].text.strip()) #현황
 print(soup.select('td')[3].text.strip()) #주소
 # print(soup.select('td')[4].text.strip()) #아이콘이라서 텍스트로 안될꺼라 예상되어 뺏다.
 print(soup.select('td')[5].text.strip()) #전화번호
+# 첫번째 칸에 있는 정보가 조회되었다.
+
+#세번째 칸 조회해보기 ^
+
+# for idx,row in enumerate(store_rows): # 1페이지 한 행을 출력하는 함수 # idx,row로 받는 이유, enumerate ^ 갯수확인
+#     print(idx+1) # ^ 이거 무슨 기능?
+#     print(soup.select('td')[0].text.strip()) #지역
+#     print(soup.select('td')[1].text.strip()) #매장명
+#     print(soup.select('td')[2].text.strip()) #현황
+#     print(soup.select('td')[3].text.strip()) #주소
+#     print(soup.select('td')[5].text.strip()) #전화번호
+#     print('*'*100)
+
+# 수집한 정보를 사용하기위해선 두가지 기능을 만들어야한다.
+# 데이터를 조회하고, 그 정보를 저장하는 기능을 만든다.
+
+# 방금 조회하는 방법을 배웠다면ㅡ 이제 이 정보를 저장하기위해 테이블로 변환시키는 과정을 가져볼꺼다.
+# 튜플로 변환하고 리스트로 감싸기.
+
+store_lists = []
+for row in enumerate(store_rows):
+    store_lists.append(
+    (
+    row.select('td')[0].text.strip(),
+    row.select('td')[1].text.strip(),
+    row.select('td')[2].text.strip(),
+    row.select('td')[3].text.strip(),
+    row.select('td')[5].text.strip()
+    )
+    )
+
+
+# Data Base접속
+# insert 쿼리문을 이용해서 수집한 데이터를 DB에 저장
+# DB 에 접속
+# 이부분은 static_03.py 이어서
