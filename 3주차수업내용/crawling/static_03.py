@@ -16,9 +16,14 @@ def get_connection():
         database= 'shopinfo'
     )
 
-with get_connection() as conn:
-    with conn.cursor as cur:
-        sql = '''insert into shop_base_tbl
-        values(null,'?','?','?','?','?');'''
-        # cur.execute(sql,( , , , , ))
-        cur.executemany
+import crawlingcoffee
+for page_num in range(1,47): # 전체 페이지 조회 설정
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            sql = '''
+            insert into shop_base_tbl
+            values(null,%s,%s,%s,%s,%s);
+            '''
+            cur.executemany(sql,crawlingcoffee.get_coffeshop_data(page_num))
+            # print('데이터 추가 성공')
+        conn.commit()

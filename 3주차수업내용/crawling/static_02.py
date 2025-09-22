@@ -2,7 +2,7 @@ import requests # ^ 이거 무슨기능을 import한건지
 url = 'https://www.hollys.co.kr/store/korea/korStore2.do?'
 # 연결통로 생성, 이전에 mysql통로생성하는 것과 동일하다!
 from_data = {
-    'pageNo' : 1,
+    'pageNo' : 1, # 1 페이지
     'sido' : '',
     'gungun' : '',
     'store' : ''
@@ -57,7 +57,7 @@ print(soup.select('td')[5].text.strip()) #전화번호
 
 store_lists = []
 for row in enumerate(store_rows):
-    store_lists.append(
+    store_lists.append( # 튜플로 만든다음에 리스트로 요소로 저장
     (
     row.select('td')[0].text.strip(),
     row.select('td')[1].text.strip(),
@@ -66,7 +66,7 @@ for row in enumerate(store_rows):
     row.select('td')[5].text.strip()
     )
     )
-
+print(store_lists)
 
 # Data Base접속
 # insert 쿼리문을 이용해서 수집한 데이터를 DB에 저장
