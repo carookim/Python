@@ -13,7 +13,7 @@ def get_connection():
     )
 import crawlingcoffee
 # 터미널에서 pip install tqdm
-import tqdm # ^
+import tqdm # ^ 파이썬에서 진행 상황(progress)을 시각적으로 보여주는 라이브러리
 for page_num in tqdm.tqdm(range(1,47)):
     datas = crawlingcoffee.get_coffeshop_data(page_num)
     with get_connection() as conn:

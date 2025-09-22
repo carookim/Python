@@ -1,3 +1,4 @@
+# 정적 사이트에서 데이터를 크롤링 하는 방법
 import requests
 # 데이터를 요청 할 주소
 url = 'https://www.hollys.co.kr/store/korea/korStore2.do?'
