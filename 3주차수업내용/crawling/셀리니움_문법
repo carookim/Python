@@ -22,7 +22,7 @@ if not agree_checkbox.is_selected():
  4. 레디오 버튼 <input type='radio'> 
  ```
  <input type="radio" name="rodoMonthPeriod" value="period">
- radio = driver.find_element(By.CSS_SELECTOR, "input[name='rdoMonthPeriod'][value='period']")
+radio = driver.find_element(By.CSS_SELECTOR, "input[name='rdoMonthPeriod'][value='period']")
 radio.click()
  ```
 

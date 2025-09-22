@@ -1,4 +1,5 @@
 # 수시로 오류가뜨는 이유, 텍스트 추출이 안되는 이유 ^0 수정함 : 텍스트 추출부분에서 주소 경로 입력에서 누락된 정보 있어서 tbody > tr,
+# 다나와 자동차
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
