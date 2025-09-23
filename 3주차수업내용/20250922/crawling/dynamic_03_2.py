@@ -67,7 +67,7 @@ time.sleep(3)
 
 # 해당 정보를 담은 문자열 추출 ^
 soup = BeautifulSoup(driver.page_source,'html.parser')
-car_datas = soup.select('#autodanawa_gridC > div.gridMain > article > main > div > div:nth-child(4) > div.left > table > tr')
+car_datas = soup.select('#autodanawa_gridC > div.gridMain > article > main > div > div:nth-child(4) > div.left > table > tbody > tr')
 for row in car_datas:
     car_datas = row.select('td')
     print(car_datas[0].text.strip(),
