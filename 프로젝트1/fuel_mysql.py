@@ -13,24 +13,36 @@ def get_connection():
         password = os.getenv('DB_PASSWORD'),
         database= 'autoreg_kr'
     )
+conn = get_connection()
+cur = conn.cursor()
 import fuel_car
-# 터미널에서 pip install tqdm
-import tqdm # ^ 파이썬에서 진행 상황(progress)을 시각적으로 보여주는 라이브러리
-for page_num in tqdm.tqdm(range(1,47)):
-    datas = fuel_car.get_coffeshop_data(page_num)
-    with get_connection() as conn:
-        with conn.cursor() as cur:
-            for data in datas:# 한번에 많은 내용을 추가하려고하면 오류가 날수도있어서 일부러 항행씩 처리한다. 그리고 어디부분에 오류가 나는 지 확인
-                try:
-                    sql = 'insert into shop_base2_tbl values(%s,%s,%s,%s,%s)'
-                    cur.execute(sql,(data[0],data[1],data[2],data[3],data[4]))
-                except pymysql.err.IntegrityError:
-                    sql =  '''
-                        update shop_base2_tbl
-                        set shop_state=%s, shop_addr=%s, shop_phone_number=%s
-                        where shop_area=%s and shop_name=%s
-                        '''
-                    cur.execute(sql,(data[2],data[3],data[4],data[0],data[1]))
-                    conn.commit()
-                else:
-                    conn.commit()
+
+# INSERT 쿼리
+sql = "INSERT INTO fuel_stats (ym, car_type, fuel_type, car_count) VALUES (%s, %s, %s, %s)"
+
+insert_data = []
+
+for ym, data_list in ym_dict.items():
+    for item in data_list:
+        car_type = item[0]  # 튜플 첫 번째 요소가 차종
+
+        # item 길이 부족 시 0으로 채우기 (차종 포함 총 10개)
+        total_length_needed = len(fuel_types) + 1
+        if len(item) < total_length_needed:
+            item = tuple(list(item) + ['0'] * (total_length_needed - len(item)))
+
+        # fuel_types별로 car_count 추출
+        for ft_idx, fuel_type in enumerate(fuel_types):
+            count_str = item[ft_idx + 1]  # +1 : 차종 제외
+            count = int(count_str.replace(',', ''))  # 이미 '-'는 '0'으로 처리되어 있음
+            insert_data.append((ym, car_type, fuel_type, count))
+
+# MySQL에 한 번에 삽입
+try:
+    cur.executemany(sql, insert_data)
+    conn.commit()
+    print(f"총 {len(insert_data)}건 삽입 완료")
+except pymysql.err.IntegrityError as e:
+    print("무결성 오류 발생:", e)
+finally:
+    conn.close()

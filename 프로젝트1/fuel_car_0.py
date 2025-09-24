@@ -19,7 +19,7 @@ driver.maximize_window()
 print('브라우저가 성공적으로 열렸습니다.')
 time.sleep(3)
 
-# 시점 -> 시작 지점 -> 2015.01
+# 시점 -> 시작 지점 -> 2015.01 -> 2025.12
 
 # 시점 클릭
 point_click = driver.find_element(By.ID,'tabTimeText')
@@ -31,7 +31,7 @@ start_point_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]'
 start_point_click.click()
 time.sleep(2)
 
-# 2020.01 클릭
+# 2024.12 클릭
 y2020_m01_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]/option[120]')
 y2020_m01_click.click()
 time.sleep(2)
@@ -262,3 +262,21 @@ for ym, items in list(ym_dict.items())[:3]:
     print(ym, items)
 
 # sql에 입력을 할때 ym, car_type, fuel_type, car_count = 3,176,933
+
+def get_fuel_car_data():
+    insert_data = []
+
+    fuel_types = ['소계','휘발유','경유','LPG','전기','CNG','하이브리드','수소','기타']
+
+    for ym, data_list in ym_dict.items():
+        for idx, item in enumerate(data_list):
+            # item: (차종별, 소계, 휘발유, 경유, ...)
+            car_type = item[0]  # 튜플 첫 번째 요소가 차종
+            for ft_idx, fuel_type in enumerate(fuel_types):
+                # car_count 문자열을 int로 변환, '-'는 0으로 처리
+                count_str = item[ft_idx+1]  # +1 : 차종 제외
+                count = int(count_str.replace(',', '')) if count_str != '-' else 0
+                insert_data.append((ym, car_type, fuel_type, count))
+
+    # 확인
+    print(insert_data[:10])

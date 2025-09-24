@@ -19,7 +19,7 @@ driver.maximize_window()
 print('브라우저가 성공적으로 열렸습니다.')
 time.sleep(3)
 
-# 시점 -> 시작 지점 -> 2015.01
+# 시점 -> 시작 지점 -> 2015.01 -> 2025.12
 
 # 시점 클릭
 point_click = driver.find_element(By.ID,'tabTimeText')
@@ -45,9 +45,10 @@ time.sleep(10)
 soup = BeautifulSoup(driver.page_source,'html.parser')
 fuel_car_datas = soup.select('#mainTable > tbody > tr')
 
+# 행 별로 저장
 for i, row in enumerate(fuel_car_datas[:5]): # 상위 5행만 처리 range(0,4)
     text = row.text.strip()  # 행의 텍스트 추출
-    cells = text.split('\xa0')  # 띄어쓰기 기준으로 분리
+    cells = text.split('\xa0')  # \xa0 기준으로 분리
     if i == 0:
         list_subtotal = cells
     elif i == 1:
@@ -59,15 +60,13 @@ for i, row in enumerate(fuel_car_datas[:5]): # 상위 5행만 처리 range(0,4)
     elif i == 4:
         list_special = cells
 
-# 리스트 컴프리헨션으로  '-'를 '0'으로 변경
+# 저장된 데이터 내부에 있는 '-'를 '0'으로 리스트 컴프리헨션으로 변경
 change_0 = [list_subtotal,list_passenger,list_bus,list_truck,list_special]
 list_subtotal = ['0' if x == '-' else x for x in change_0[0]]
 list_passenger = ['0' if x == '-' else x for x in change_0[1]]
 list_bus = ['0' if x == '-' else x for x in change_0[2]]
 list_truck = ['0' if x == '-' else x for x in change_0[3]]
 list_special = ['0' if x == '-' else x for x in change_0[4]]
-
-# sql에 입력을 할때 ym, car_type, fuel_type, car_count = 3,176,933
 
 # zip()으로 리스트들의 동일한 인덱스끼리 튜플로 묶기
 list_subtotal = list_subtotal[1:] # 계 소계로 되어있어서 인덱스 하나가 밀린다. 그래서 인덱스 1부터 시작하게 한다.
@@ -99,59 +98,11 @@ for i, data in enumerate(fuel_messy_datas):
 # print(차종별_list)
 # print(휘발유_list)
 # print(소계_list)
+# 소계 리스트는 2015 초반 구간에 수소항목이 사라져있어서 수정 필요 < - 이거 하는 중 2015.10부터 수소가 생성됨
 pattern_list_3 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,수소_list,기타_list]
 
 # 연월 리스트 만들기 (2015-01 ~ 2024-12)
-from datetime import datetime
 
-dates = []
-for year in range(2015, 2025):
-    for month in range(12, 0, -1):  # 12월부터 1월까지
-        dates.append(f"{year}{month:02d}")
-
-# 연월별 데이터 딕셔너리 초기화
-ym_dict = {ym: [] for ym in dates}
-
-# 데이터 9개마다 다음 연월로 넘어가서 저장
-current_ym_index = 0
-
-for a in range(len(pattern_list_3)):
-    for i, item in enumerate(pattern_list_3[a]):
-        ym = dates[current_ym_index]
-        ym_dict[ym].append(item)
-
-        # 9개마다 다음 연월로 이동
-        if (i + 1) % 9 == 0:
-            current_ym_index += 1
-            if current_ym_index >= len(dates):
-                break
-
+# 만들어진 리스트 연월별 데이터로 묶기?
 
 # sql에 입력을 할때 ym, car_type, fuel_type, car_count
-
-# fuel_types = ['소계','휘발유','경유','LPG','전기','CNG','하이브리드','수소','기타']
-# insert_data = []
-
-# # 연월 리스트
-# dates = []
-# for year in range(2015, 2025):
-#     for month in range(12, 0, -1):
-#         dates.append(f"{year}{month:02d}")
-
-# # ym별로 차종과 fuel_types 연결
-# for ym_idx, ym in enumerate(dates):
-#     for car_idx, 차종_tuple in enumerate(차종별_list):
-#         car_type = 차종_tuple[0]  # 예: '승용차'
-
-#         # 각 fuel_type별 값 추출
-#         for ft_idx, fuel_type in enumerate(fuel_types):
-#             # pattern_list_3[ft_idx][car_idx + ym_idx*len(차종별_list)]
-#             # 안전하게 인덱스 처리
-#             try:
-#                 value = pattern_list_3[ft_idx][ym_idx * len(차종별_list) + car_idx][ft_idx + 1]
-#                 count = int(value.replace(',', ''))  # '-'는 이미 '0'으로 처리
-#             except IndexError:
-#                 count = 0
-#             insert_data.append((ym, car_type, fuel_type, count))
-
-# # get_fuel_car_data()
