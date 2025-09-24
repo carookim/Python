@@ -19,7 +19,7 @@ driver.maximize_window()
 print('브라우저가 성공적으로 열렸습니다.')
 time.sleep(3)
 
-# 시점 -> 시작 지점 -> 2015.01 -> 2025.12
+# 시점 -> 시작 지점 -> 2015.01 -> 2024.12
 
 # 시점 클릭
 point_click = driver.find_element(By.ID,'tabTimeText')
@@ -88,101 +88,81 @@ CNG_list = []
 기타_list = []
 
 pattern_list_2 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,수소_list,기타_list]
-pattern_list_2_1 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,기타_list]
 # print(fuel_messy_datas)
+# fuel_messy_datas를 순회하며 데이터 처리
+# 낮은 숫자가 최근 일자, 높아질수록 과거 일자
+# fuel_messy_datas 에서 튜플의 열이 982 이후에는 수소항목이 없어서
+# 삽입을 할때 pattern_list_2 참고
+# 0 소계리스트에 넣었다가
+# 1 휘발유리스트에 넣었다가
+# 2 경유리스트에 넣었다가
+# 3 전기리스트에 넣었다가
+# 4 CNG리스트에 넣었다가
+# 5 하이브리드리스트에 넣었다가
+# 6 수소 이부분에는 임의의 튜플 (0,'0','0','0','0')으로 넣는다.
 
-# 1
-# for i, data in enumerate(fuel_messy_datas):
-#     if i == 0:
-#         차종별_list.append(fuel_messy_datas[i])
-#     elif i < 982: # 2024.12 부터 2015.11 까지 수소 존재, 2015.10 부터 수소 없음
-#         idx = (i - 1) % len(pattern_list_2) # 기존 인덱스 에서 1을 빼고 , 9로 나눈 나머지를 idx로 사용
-#         pattern_list_2[idx].append(data)
-# # len(fuel_messy_datas), 튜플 갯수 : 1070
-# # 2015.10부터 수소가 생성, 그 이후 튜플 갯수 : 88
-#     else:
-#         idx = (i - 1) % len(pattern_list_2_1) # 기존 인덱스 에서 1을 빼고 , 8로 나눈 나머지를 idx로 사용
-#         pattern_list_2_1[idx].append(data)
+# 수소 데이터가 없을 때 삽입할 임의의 튜플 (placeholder)
+hydrogen_placeholder = (0, '0', '0', '0', '0')
 
-# 2
-# for i, data in enumerate(fuel_messy_datas):
-#     if i == 0:
-#         # 첫 번째 항목은 차종별
-#         차종별_list.append(data)
-#     else:
-#         # i < 982: 수소 없음 → 8개 패턴
-#         # i >= 982: 수소 있음 → 9개 패턴
-#         current_pattern = pattern_list_2 if i >= 982 else pattern_list_2_1
-#         idx = (i - 1) % len(current_pattern)
-#         current_pattern[idx].append(data)
+# 7 기타리스트에 넣는다.
 
-
-# 3
-# pattern_idx = 0  # 패턴 리스트 안에서 어느 리스트에 넣을지 순서를 기억
-# for i, data in enumerate(fuel_messy_datas):
-#     if i == 0:
-#         차종별_list.append(data)
-#     else:
-#         current_pattern = pattern_list_2 if i >= 982 else pattern_list_2_1
-#         current_pattern[pattern_idx].append(data)  # 현재 인덱스에 넣기
-#         pattern_idx += 1                          # 다음 리스트로 이동
-#         if pattern_idx >= len(current_pattern):
-#             pattern_idx = 0                       # 마지막이면 다시 처음으로
-
-# 4
-# pattern_list_2 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,수소_list,기타_list]
-# pattern_list_2_1 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,기타_list]
-pattern_idx = 0
 for i, data in enumerate(fuel_messy_datas):
     if i == 0:
         차종별_list.append(data)
-    elif i < 982:
-        idx = (i - 1) % len(pattern_list_2) # 기존 인덱스 에서 1을 빼고 , 9로 나눈 나머지를 idx로 사용
-        pattern_list_2[idx].append(data)
+        continue
+
+    if i <= 982:
+        # 2015.09까지 (수소 있음)
+        pattern_idx = (i - 1) % len(pattern_list_2)
+        pattern_list_2[pattern_idx].append(data)
+
     else:
-                # 이후 구간: 수소 있음 → 9개 패턴
-        current_pattern = pattern_list_2_1
-        current_pattern[pattern_idx].append(data)
-        
-        # 인덱스 순서대로 증가, 끝이면 0으로
-        pattern_idx += 1
-        if pattern_idx >= len(current_pattern):
-            pattern_idx = 0
+        # 2015.10부터 (수소 없음)
+        pattern_idx = (i - 1) % (len(pattern_list_2) - 1)
+
+        if pattern_idx == 7:  # 수소 자리
+            pattern_list_2[7].append(hydrogen_placeholder)  # <- 여기서 강제로 00000 추가
+        elif pattern_idx < 7:
+            pattern_list_2[pattern_idx].append(data)
+        else:
+            pattern_list_2[pattern_idx + 1].append(data)
 
 # print(차종별_list)
-# print(휘발유_list)
+print(휘발유_list)
 # print(소계_list)
-# 소계 리스트는 2015 초반 구간에 수소항목이 사라져있어서 수정 필요 < - 이거 하는 중 2015.10부터 수소가 생성됨
+print('----------------------------------------------------------------------------')
+print(수소_list)
+# 소계 리스트는 2015 초반 구간에 수소항목이 사라져있어서 수정 필요 < - 이거 하는 중 2015.12부터 수소가 생성됨
 pattern_list_3 = [소계_list,휘발유_list,경유_list,LPG_list,전기_list,CNG_list,하이브리드_list,수소_list,기타_list]
 
 # 만들어진 리스트 연월별 데이터로 묶기
 fuel_types = ['소계','휘발유','경유','LPG','전기','CNG','하이브리드','수소','기타']
 insert_data = []
 
-# 연월 리스트 (2015-01 ~ 2024-12)
-dates = []
-for year in range(2015, 2025):
-    for month in range(12, 0, -1):
-        dates.append(f"{year}{month:02d}")
+# # 연월 리스트 (2015-01 ~ 2024-12)
+# dates = []
+# for year in range(2015, 2025):
+#     for month in range(12, 0, -1):
+#         dates.append(f"{year}{month:02d}")
 
-# ym별로 차종과 fuel_types 연결
-for ym_idx, ym in enumerate(dates):
-    for car_idx, 차종_tuple in enumerate(차종별_list):
-        car_type = 차종_tuple[0]  # 예: '승용차'
+# # ym별로 차종과 fuel_types 연결
+# for ym_idx, ym in enumerate(dates):
+#     for car_idx, 차종_tuple in enumerate(차종별_list):
+#         car_type = 차종_tuple[0]  # 예: '승용차'
 
-        # 각 fuel_type별 값 추출
-        for ft_idx, fuel_type in enumerate(fuel_types):
-            # pattern_list_3[ft_idx][car_idx + ym_idx*len(차종별_list)]
-            # 안전하게 인덱스 처리
-            try:
-                value = pattern_list_3[ft_idx][ym_idx * len(차종별_list) + car_idx][ft_idx + 1]
-                count = int(value.replace(',', ''))  # '-'는 이미 '0'으로 처리
-            except IndexError:
-                count = 0
-            insert_data.append((ym, car_type, fuel_type, count))
+#         # 각 fuel_type별 값 추출
+#         for ft_idx, fuel_type in enumerate(fuel_types):
+#             # pattern_list_3[ft_idx][car_idx + ym_idx*len(차종별_list)]
+#             # 안전하게 인덱스 처리
+#             try:
+#                 value = pattern_list_3[ft_idx][ym_idx * len(차종별_list) + car_idx][ft_idx + 1]
+#                 count = int(value.replace(',', ''))  # '-'는 이미 '0'으로 처리
+#             except IndexError:
+#                 count = 0
+#             insert_data.append((ym, car_type, fuel_type, count))
 
 
-for i in range(0,1071):
-    print(insert_data[i])
+# for i in range(0,1071):
+#     print(insert_data[i])
 
 # sql에 입력을 할때 ym, car_type, fuel_type, car_count
