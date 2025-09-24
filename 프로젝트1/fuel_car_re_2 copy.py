@@ -1,4 +1,5 @@
 # 완료
+
 # pip install selenium webdriver-manager
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -27,7 +28,7 @@ point_click = driver.find_element(By.ID,'tabTimeText')
 point_click.click()
 time.sleep(2)
 
-# 2015.12 클릭
+# 2015.12 클릭  ^ selector 요소 를 이용해서 동적크롤링 설정하기를 추천한다. why?
 # start_point_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]/option[109]')
 # start_point_click.click()
 # select 요소 찾기
@@ -55,9 +56,10 @@ fuel_car_datas = soup.select('#mainTable > tbody > tr')
 # 행 별로 저장
 total_rows = []
 for i, row in enumerate(fuel_car_datas[:5]): # 상위 5행만 처리 range(0,4)
+                                             # 데이터 인덱스를 알아가는 과정은 직접 인덱스를 하나씩 넣어보면서 추론해보기
     tds = row.select('td')
     total_rows.append([td.text.replace('\xa0','') for td in tds])
-    
+
 
 
 ###############################################################
