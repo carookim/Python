@@ -20,7 +20,7 @@ driver.maximize_window()
 print('브라우저가 성공적으로 열렸습니다.')
 time.sleep(3)
 
-# 시점 -> 시작 지점 -> 2015.12 -> 2024.12
+# 시점 -> 시작 지점 -> 2015.01 -> 2024.12
 
 # 시점 클릭
 point_click = driver.find_element(By.ID,'tabTimeText')
@@ -28,20 +28,14 @@ point_click.click()
 time.sleep(2)
 
 # 2015.01 클릭
-# start_point_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]/option[109]')
-# start_point_click.click()
-# select 요소 찾기
-select_element = driver.find_element("css selector", "select.box")  # class="box"인 select
-# Select 객체 생성
-select = Select(select_element)
-# 방법 1: value 값으로 선택
-select.select_by_value("201512")  # 2015.12
-time.sleep(3)
+start_point_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]')
+start_point_click.click()
+time.sleep(2)
 
 # 2024.12 클릭
 y2020_m01_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]/option[120]')
 y2020_m01_click.click()
-time.sleep(3)
+time.sleep(2)
 
 # 조회 v 클릭
 y2025_m01_click = driver.find_element(By.XPATH,'//*[@id="tabTimeText"]/button[2]')
@@ -102,7 +96,7 @@ for idx, row in enumerate(zip(*[data[3:] for data in total_rows[1:]])):
             count_int = 0
         queries.append((ym, car, fuel, count_int))
 #################################################
-print(queries[:5])
+print(len(queries))
 
 import pymysql
 from dotenv import load_dotenv

@@ -1,3 +1,4 @@
+# pip install SQLAlchemy
 import pandas as pd
 from sqlalchemy import create_engine
 from selenium import webdriver
@@ -18,11 +19,17 @@ DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_NAME = os.getenv('DB_NAME')
 
+
+
+
 # 1. 엑셀 파일 읽기
 file_path = "data/자동차등록현황보고_자동차등록대수현황 시도별 (201501 ~ 201812).xlsx"
 
 # 헤더 없이 처음부터 읽기
 df = pd.read_excel(file_path,header=0)
+
+
+
 
 # 컬럼 이름 직접 지정 (원하는 이름으로)
 df.columns = ['ym', 'region', 'passenger_total', 'bus_total', 'truck_total', 'special_total', 'total_count']
@@ -31,6 +38,10 @@ df.columns = ['ym', 'region', 'passenger_total', 'bus_total', 'truck_total', 'sp
 df = df[['ym', 'region', 'passenger_total', 'bus_total', 'truck_total', 'special_total', 'total_count']]
 
 print(df)  # 데이터 확인
+
+
+
+
 
 def get_connection():
     return pymysql.connect(
