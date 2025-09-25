@@ -54,7 +54,7 @@ print('*'*100)
 # print(fuel_car_datas[2]) # 마지막 데이터 529
 # print(fuel_car_datas[3]) # 마지막 데이터 2554
 # print(fuel_car_datas[4]) # 마지막 데이터 64
-print(fuel_car_datas[5]) # 인덱스 오류
+# print(fuel_car_datas[5]) # 인덱스 오류 fuel_car_datas의 인덱스가 5까지 있다.
 print('*'*100)
 
 # 행 별로 저장
@@ -69,78 +69,79 @@ for i, row in enumerate(fuel_car_datas[:5]): # 상위 5행만 처리 range(0,4)
     total_rows.append([td.text.replace('\xa0','') for td in tds])
     
 print(total_rows)
+# 리스트 행 5개가 들어가 있다.
 
-# ###############################################################
+###############################################################
 
 
-# car_types = ['승용차','승합차','화물차','특수차']
-# fuel_list = ['휘발유','경유','LPG','전기','CNG','하이브리드','수소','기타','소계']
+car_types = ['승용차','승합차','화물차','특수차']
+fuel_list = ['휘발유','경유','LPG','전기','CNG','하이브리드','수소','기타','소계']
 
-# # 쿼리를 담을 리스트
-# queries = []
+# 쿼리를 담을 리스트
+queries = []
 
-# start_year = 2024
-# start_month = 12
+start_year = 2024
+start_month = 12
 
-# for idx, row in enumerate(zip(*[data[3:] for data in total_rows[1:]])):
-#     # 총 몇 개 월이 지나갔는지 계산 (9개 단위로 1개월 감소)
-#     months_ago = idx // 9
+for idx, row in enumerate(zip(*[data[3:] for data in total_rows[1:]])): # total_rows[1:] : 소계 행 제외
+                                                                        # data[3:] : 소계 행 제외
+    months_ago = idx // 9
 
-#     # 연도 계산
-#     year = start_year
-#     month = start_month - months_ago
+    # 연도 계산
+    year = start_year
+    month = start_month - months_ago
 
-#     # month가 0 이하이면 연도 감소 + 월 12부터 다시 시작
-#     while month <= 0:
-#         month += 12
-#         year -= 1
+    # month가 0 이하이면 연도 감소 + 월 12부터 다시 시작
+    while month <= 0:
+        month += 12
+        year -= 1
 
-#     # ym 문자열
-#     ym = f"{year}{month:02d}"
+    # ym 문자열
+    ym = f"{year}{month:02d}"
 
-#     # 2015년 12월 이전이면 반복 종료
-#     if int(ym) < 201512:
-#         break
+    # 2015년 12월 이전이면 반복 종료
+    if int(ym) < 201512:
+        break
 
-#     fuel = fuel_list[idx % 9]
+    fuel = fuel_list[idx % 9]
 
-#     for i, car in enumerate(car_types):
-#         count = row[i]
-#         try:
-#             count_int = int(str(count).replace(',',''))
-#         except:
-#             count_int = 0
-#         queries.append((ym, car, fuel, count_int))
-# #################################################
-# print(queries[:5])
+    for i, car in enumerate(car_types):
+        count = row[i]
+        try:
+            count_int = int(str(count).replace(',',''))
+        except:
+            count_int = 0
+        queries.append((ym, car, fuel, count_int))
+#################################################
+print(queries[:5])
 
-# import pymysql
-# from dotenv import load_dotenv
-# import os
+import pymysql
+from dotenv import load_dotenv
+import os
 
-# # .env 로드
-# load_dotenv()
+# .env 로드
+load_dotenv()
 
-# # sautoreg_kr
-# def get_connection():
-#     return pymysql.connect(
-#         host = os.getenv('DB_HOST'),
-#         user = os.getenv('DB_USER'),
-#         password = os.getenv('DB_PASSWORD'),
-#         database= 'autoreg_kr'
-#     )
-# conn = get_connection()
-# cursor = conn.cursor()
+# sautoreg_kr
+def get_connection():
+    return pymysql.connect(
+        host = os.getenv('DB_HOST'),
+        user = os.getenv('DB_USER'),
+        password = os.getenv('DB_PASSWORD'),
+        database= 'autoreg_kr'
+    )
+conn = get_connection()
+cursor = conn.cursor()
 
-# # 모든 쿼리를 한 번에 실행
+# 모든 쿼리를 한 번에 실행
 
-# table_name = "fuel_car"
-# sql = f"INSERT INTO {table_name} (ym, car_type, fuel_type, car_count) VALUES (%s, %s, %s, %s)"
-# cursor.executemany(sql, queries)
+table_name = "fuel_car"
+sql = f"INSERT INTO {table_name} (ym, car_type, fuel_type, car_count) VALUES (%s, %s, %s, %s)"
+cursor.executemany(sql, queries)
 
-# # 커밋
-# conn.commit()
+# 커밋
+conn.commit()
 
-# # 연결 종료
-# cursor.close()
-# conn.close()
+# 연결 종료
+cursor.close()
+conn.close()
