@@ -84,7 +84,7 @@ start_year = 2024
 start_month = 12
 
 for idx, row in enumerate(zip(*[data[3:] for data in total_rows[1:]])): # total_rows[1:] : 소계 행 제외
-                                                                        # data[3:] : 소계 행 제외
+                                                                        # data[3:] : 왼쪽 소계 행 제외
     months_ago = idx // 9
 
     # 연도 계산

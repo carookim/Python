@@ -29,6 +29,7 @@ point_click.click()
 time.sleep(2)
 
 # 2015.12 클릭  ^ selector 요소 를 이용해서 동적크롤링 설정하기를 추천한다. why?
+# ^ 그리고 작동이 안되는이유 알아보기
 # start_point_click = driver.find_element(By.XPATH,'//*[@id="timeM"]/h2/select[1]/option[109]')
 # start_point_click.click()
 # select 요소 찾기
