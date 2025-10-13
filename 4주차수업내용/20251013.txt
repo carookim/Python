@@ -1,0 +1,134 @@
+머신러닝은
+제공된 데이터들의 근사치를 포함하는 그래프를 생성하여
+그걸 기준으로 제공하는 값의 결과를 추론한다.
+
+머신러닝 하기전 참고할 주의사항 :
+과적합 상태여부 검수하기
+fit_transform, fit, transform 용도별 사용 유의하기 -> x_train에서 와 x_test 부분에서 언급된다.
+데이터를 학습시킬때, 랜덤으로 분산시켜서 학습하기
+
+머신러닝 Process
+데이터 구조 파악 및 결측치 나 이상한 데이터 검수하기 :
+info()
+결측치 확인 : .isnull().sum()
+중복 데이터 확인 : .duplicated().sum()
+데이터 기본 통계 정보 요약 확인 : .describe()
+데이터 분포 확인
+이상치 확인
+스케일 확인
+
+
+데이터 결측치 처리하기 :
+1) 직접 행들을 순환시켜서 try문으로 타입 변환이 안되는 에러가 난
+해당 데이터들을 리스트(bad_values)에 저장하여 nan 으로 replace(bad_values,pd.NA)
+
+# 빈 리스트에 변환 불가 값 저장
+bad_values = []
+
+# 각 값마다 float 변환 시도
+for val in df['horsepower']:
+    try:
+        float(val)
+    except Exception as e:
+        bad_values.append(val)  # 에러 발생 값 저장
+
+# 에러 난 값들을 NaN으로 대체
+df['horsepower'] = df['horsepower'].replace(bad_values, pd.NA)
+
+-> replace에서 리스트 내부의 데이터들의 어떻게 저절로 na가 되는지 에 대하여,
+리스트 내부에 있는 요소들을 지정한 데이터 내부에서 찾는 기능을 가지고 있다. 중복으로 적지않아도 된다.
+ - 현상수배 목록 같은 느낌
+
+2) pd.to_numeric 으로 돌리고 에러가 난 해당데이터는 errors = 'coerce'로
+숫자로 변환할 수 없는 값은 자동으로 NaN 처리 후, 기존 시리즈를 재정의
+
+df.horsepower = pd.to_numeric(df.horsepower,errors='coerce')
+
+3) 람다로 실수 여부를 확인, 아닌 경우에는 nan값으로 자동처리,
+해당 시리즈의 각 원소에 함수를 적용, 적용된 값을 기존 시리즈에 재정의
+
+df.horsepower = df.horsepower.apply(lambda x : x if isinstance(x,float) else pd.NA)
+
+apply()
+Series에 사용: 각 원소에 함수를 적용
+DataFrame에 사용: 각 행(row) 또는 열(column)에 함수를 적용
+
+=> 전체적으로 특정 데이터를 nan값으로 변환하는 방법은
+메소드, 혹은 함수에서 제공하는 자동 처리 기능을 활용한다.
+1) 순환문 + try /except + replace(결측치로 처리할 값 리스트, pd.NA)
+2) pd.to_numeric(검수할 데이터,errors='coerce')
+3) 람다 + apply + isinstance(x,float) else pd.NA
+
+이렇게 NaN으로 대체된 데이터들을 어떻게 처리할지를 고민해봐야한다.
+
+> 결측치 NaN을 삭제하지않는 경우, 유지 혹은 대체
+결측치 자체가 의미가 있는 경우 - 
+결측된 데이터 자체가 데이터 분석에 영향이 없는 경우 -
+인공지능 학습의 경우에는 데이터별 관계성에 대한 수치와 정확성을 조금이라도 올리기위해 삭제하지않는 경우도 있다.
+전체 데이터중에서 NaN값이 차지하는 비율이 높다면 삭제를 유보한다.
+
+다른 값으로 대체하는 경우,
+주로 fillna()를 사용하여
+평균(.mean()), 중간값(.median()), 최빈값(.mode()), 앞뒤 데이터,혹은 임의로 0, 결과없음 등으로 대체한다.
+머신러닝을 통한 상관계수 기반 결측치 예측 ^,
+interpolation ^
+
+
+결측치를 다른 값으로 대체하는 명령어 :
+
+결측치를 삭제하지않고 제외하고 연산하는 명령어 : ~
+df[~df.horsepower.isna()]
+
+결측치를 다른값으로 대체하는 명령어
+df['col'].fillna(df['col'].mean(), inplace=True)
+df['column_name'].fillna(method='ffill', inplace=True)
+df['col'].fillna(0, inplace=True)
+머신러닝을 통한 상관계수 기반 결측치 예측 ^
+df['col'].interpolate(method='linear', inplace=True)
+
+> 결측치 NaN을 삭제하는 경우
+데이터 양이 충분하고, 결측치가 적은 경우
+
+결측치 데이터 삭제:
+주로 dropna()를 사용하여
+axis=1 or 0 으로 행열 구분, 조건부로 삭제여부 설정이 가능하다.
+dropna() 명령어 사용법 : https://chatgpt.com/share/68ecce69-4424-8012-8c5f-b7c1ccd81812
+
+수치형 데이터, 학습시킬 데이터 선정하기 : .describe().columns() -> 숫자형 데이터 목록 빠르게 확인 가능
+
+AI 학습시키기전 모델 설정하기 : 학습 데이터 / 테스트 데이터 분할 수치 설정, 랜덤 수치 설정
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=100)
+len(x_train), len(y_train) # <- 점검하는 이유, 둘의 길이가 맞지않는다면,
+                                # 그 원인 https://chatgpt.com/share/68ecd07a-46cc-8012-997f-7d7c3fc36dde
+
+학습 시킬 데이터 다항식으로 변환하기 :
+from sklearn.preprocessing import PolynomialFeatures
+poly = PolynomialFeatures(degree=2) # degree는 차수를 설정, 현재는 2차항으로 설정
+x_poly_train = poly.fit_transform(x_train)
+x_poly_test = poly.transform(x_test) # <- 테스트 데이터에서 transform을 사용해야되는 이유,
+                                        # fit_transform은 데이터 기준으로 poly 구조를 다시 학습한다.
+                                        # -> 학습 데이터와 테스트 데이터 구조가 달라져서 성능 평가(R²)가 달라질 수 있어서
+                                            # 학습데이터를 기준으로 테스트 데이터 구조도 맞춘다.
+
+PolynomialFeatures는 입력 변수 X의 형태를 확장하는 도구예요.
+예를 들어 X가 한 개의 특성을 가지고 있다면,
+원래 X	변환된 X_poly
+x	        [1, x, x²]
+이렇게 만들어줍니다.
+→ 즉, 입력값(feature)을 다항식 항의 여러형태로 늘려주는 것이죠.
+
+AI 학습 객체 생성 및 AI 학습 시키기 :
+from sklearn.linear_model import LinearRegression
+lr = LinearRegression()
+lr.fit(X_train_poly,y_train)
+
+학습한 AI 검토하기 : score(), predict()
+score()은 회귀모델인 경우 결정계수를 반환하고, 분류모델인경우 정확도를 반환한다.
+
+predict()
+
+# 이론적인 개념
+상관계수
+결정계수
+회귀 선형회귀
